@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: scaletestapp-sm
+  namespace: default
+  labels:
+    release: prometheus  # должно совпадать с serviceMonitorSelector у твоего Prometheus
+spec:
+  selector:
+    matchLabels:
+      app: scaletestapp   # ищем Service с этим лейблом
+  namespaceSelector:
+    matchNames:
+      - default            # мониторим сервисы только в default namespace
+  endpoints:
+    - port: http           # имя порта из Service, нужно задать
+      targetPort: 8080     # можно явно указать, если порт не имеет имени
+      path: /metrics       # стандартный путь для метрик
+      interval: 30s        # частота опроса
+      scheme: http
