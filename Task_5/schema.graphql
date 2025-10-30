@@ -1,0 +1,36 @@
+type Client {
+  id: ID!
+  name: String!
+  age: Int!
+  documents: [Document!]
+  relatives: [Relative!]
+}
+
+type Document {
+  id: ID!
+  type: String!
+  number: String!
+  issueDate: String!
+  expiryDate: String!
+}
+
+type Relative {
+  id: ID!
+  relationType: String!
+  name: String!
+  age: Int!
+}
+
+type Query {
+  # Получить клиента по ID с возможностью выбрать связанные данные
+  client(id: ID!): Client
+  
+  # Получить документы клиента (аналог GET /clients/{id}/documents)
+  clientDocuments(clientId: ID!): [Document!]
+  
+  # Получить родственников клиента (аналог GET /clients/{id}/relatives)
+  clientRelatives(clientId: ID!): [Relative!]
+  
+  # Расширенный запрос для получения нескольких клиентов с фильтрацией
+  clients(ids: [ID!], name: String): [Client!]
+}
