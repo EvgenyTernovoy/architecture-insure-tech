@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: scaletestapp-hpa-rules
+  namespace: monitoring  # В том же namespace что и Prometheus
+  labels:
+    app: scaletestapp
+    release: prometheus
+spec:
+  groups:
+  - name: scaletestapp-hpa
+    rules:
+    - record: http_requests_per_second
+      expr: rate(http_requests_total[2m])
